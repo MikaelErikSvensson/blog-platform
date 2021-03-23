@@ -1,0 +1,232 @@
+body {
+  font-family: 'Calendas Plus', 'Crimson Text', 'Hoefler Text', 'Georgia', serif;
+  background-color: #ffffff;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+p {
+  font-size: 20px;
+  color: rgb(46, 43, 43);
+}
+
+.date-text {
+  color: #b3b3b3;
+  font-weight: 300;
+  font-size: 15px;
+  margin-bottom: 2%;
+}
+
+a {
+  color: rgb(19, 18, 18);
+  -webkit-transition: 0.3s all ease;
+  -o-transition: 0.3s all ease;
+  transition: 0.3s all ease;
+}
+a:hover {
+  text-decoration: none !important;
+  color: rgb(70, 129, 224);
+}
+
+h1 {
+  font-size: 40px;
+  color: rgb(46, 46, 46);
+  font-weight: bold;
+}
+
+h2 {
+  margin-right: 10px;
+  font-size: 30px;
+  font-weight: bold;
+  color: grey;
+}
+
+h2:hover {
+  color: rgb(70, 129, 224);
+}
+
+h4 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-left: 10px;
+  color: grey;
+}
+
+h4:hover {
+  color: rgb(70, 129, 224);
+}
+
+h5 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 30px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0%;
+  z-index: 1000;
+  height: 3vh;
+  width: 100%;
+  background-color: #343a40;
+  text-align: center;
+  color: white;
+}
+
+.text-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 5%;
+}
+
+.text-child {
+  text-align: left;
+  margin: 0 auto;
+  width: 60%;
+}
+
+@media only screen and (max-width: 600px) {
+  .text-child {
+    width: 90%;
+  }
+  h1 {
+    font-size: 32px;
+  }
+  p {
+    font-size: 16px;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .text-child {
+    width: 80%;
+  }
+}
+
+.read-full-article {
+  color: rgb(70, 70, 243);
+}
+
+.read-full-article:hover {
+  color: rgb(157, 157, 238);
+}
+
+#header-link {
+  color: grey;
+  font-family: 'Calendas Plus', 'Crimson Text', 'Hoefler Text', 'Georgia', serif;
+}
+#header-link:hover {
+  color: rgb(70, 129, 224);
+}
+
+.header-icon {
+  margin: 10px;
+  color: rgb(82, 82, 160);
+}
+
+.article {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-control {
+  font-family: 'Calendas Plus', 'Crimson Text', 'Hoefler Text', 'Georgia', serif;
+}
+
+.btn {
+  font-family: 'Calendas Plus', 'Crimson Text', 'Hoefler Text', 'Georgia', serif;
+}
+
+.form-container {
+  width: 500px;
+  margin: 0 auto;
+  margin-top: 200px;
+}
+
+@media only screen and (max-width: 600px) {
+  .form-container {
+    width: 100%;
+    margin-top: 30%;
+  }
+}
+
+#radio input {
+  width: auto;
+  margin-left: 3em;
+}
+
+/* Loader */
+
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s;
+}
+
+@-webkit-keyframes animatebottom {
+  from {
+    bottom: -100px;
+    opacity: 0;
+  }
+  to {
+    bottom: 0px;
+    opacity: 1;
+  }
+}
+
+@keyframes animatebottom {
+  from {
+    bottom: -100px;
+    opacity: 0;
+  }
+  to {
+    bottom: 0;
+    opacity: 1;
+  }
+}
+
+/* Loader END */

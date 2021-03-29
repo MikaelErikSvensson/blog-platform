@@ -67,12 +67,12 @@ const Dashboard = ({ user, onChangeSinglePost }: DashboardProps) => {
                 <div>
                   <div>
                     <Link
-                      to={`/${post.title}`}
+                      to={`/${post.urlSlug}`}
                       onClick={() => {
                         onChangeSinglePost(post);
                       }}
                     >
-                      <h1 className="dashboard-title mt-5">{post.title}</h1>
+                      <div className="dashboard-title mt-5">{post.title}</div>
                     </Link>
                     <span className="date-text">
                       {formatDate(post.date)}{' '}
@@ -86,7 +86,7 @@ const Dashboard = ({ user, onChangeSinglePost }: DashboardProps) => {
                           onChangeSinglePost(post);
                         }}
                       >
-                        <FaEdit color="#0275d8" />
+                        <FaEdit size={20} color="#0275d8" />
                       </Link>
                       <Link
                         to="#"
@@ -97,59 +97,23 @@ const Dashboard = ({ user, onChangeSinglePost }: DashboardProps) => {
                           handleDelete(post.id);
                         }}
                       >
-                        <FaTrash color="#d9534f" />
+                        <FaTrash size={20} color="#d9534f" />
                       </Link>
                     </span>
-                    <div>
-                      <ReactMarkdown
-                        source={post.summary}
-                        allowedTypes={['paragraph', 'strong', 'emphasis', 'text', 'heading', 'list', 'listItem']}
-                      />
-                    </div>
+                    <Link
+                      to={`/${post.urlSlug}`}
+                      onClick={() => {
+                        onChangeSinglePost(post);
+                      }}
+                    >
+                      <div>
+                        <ReactMarkdown
+                          source={post.summary + '...'}
+                          allowedTypes={['paragraph', 'strong', 'emphasis', 'text', 'heading', 'list', 'listItem']}
+                        />
+                      </div>
+                    </Link>
                   </div>
-                  {/* <Link
-                  to="/edit_post"
-                  title="Edit Post"
-                  className="pr-2"
-                  type="submit"
-                  onClick={() => {
-                    handleEdit();
-                    onChangeSinglePost(post);
-                  }}
-                >
-                  <FaEdit color="#0275d8" />
-                </Link>
-                <Link
-                  to="#"
-                  title="Remove Post"
-                  className=""
-                  type="submit"
-                  onClick={() => {
-                    onRemove(post.id);
-                  }}
-                >
-                  <FaTrash color="#d9534f" />
-                </Link> */}
-
-                  {/* <button
-                  className="btn btn-primary my-2 my-sm-0"
-                  type="submit"
-                  onClick={() => {
-                    handleEdit();
-                    onChangeSinglePost(post);
-                  }}
-                >
-                  <FaEdit />
-                </button> */}
-                  {/* <button
-                  className="btn btn-danger my-2 my-sm-0 ml-1"
-                  type="submit"
-                  onClick={() => {
-                    onRemove(post.id);
-                  }}
-                >
-                  <FaTrash />
-                </button> */}
                 </div>
               </li>
             ))}

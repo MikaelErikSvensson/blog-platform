@@ -162,6 +162,22 @@ h5 {
   margin-left: 3em;
 }
 
+.homepage-text {
+  font-size: 20px;
+  font-weight: 300;
+  color: rgb(46, 43, 43);
+}
+
+.homepage-title {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.dashboard-title {
+  font-size: 32px;
+  font-weight: 600;
+}
+
 /* Loader */
 
 #loader {

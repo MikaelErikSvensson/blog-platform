@@ -86,32 +86,6 @@ namespace Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Data.Models.Comment", b =>
-                {
-                    b.Property<int>("CommentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Body")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("PostId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("CommentId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("Comments");
-                });
-
             modelBuilder.Entity("Data.Models.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -131,12 +105,6 @@ namespace Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("Meta")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("Modified")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<string>("Summary")
                         .HasColumnType("text");
 
@@ -146,32 +114,11 @@ namespace Data.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("text");
 
-                    b.Property<string>("UrlSlug")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
 
                     b.ToTable("Posts");
-                });
-
-            modelBuilder.Entity("Data.Models.Tag", b =>
-                {
-                    b.Property<int>("TagId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UrlSlug")
-                        .HasColumnType("text");
-
-                    b.HasKey("TagId");
-
-                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -304,30 +251,6 @@ namespace Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("PostTag", b =>
-                {
-                    b.Property<int>("PostsId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TagsTagId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("PostsId", "TagsTagId");
-
-                    b.HasIndex("TagsTagId");
-
-                    b.ToTable("PostTag");
-                });
-
-            modelBuilder.Entity("Data.Models.Comment", b =>
-                {
-                    b.HasOne("Data.Models.Post", "Post")
-                        .WithMany("Comments")
-                        .HasForeignKey("PostId");
-
-                    b.Navigation("Post");
-                });
-
             modelBuilder.Entity("Data.Models.Post", b =>
                 {
                     b.HasOne("Data.Models.AppUser", "AppUser")
@@ -386,26 +309,6 @@ namespace Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("PostTag", b =>
-                {
-                    b.HasOne("Data.Models.Post", null)
-                        .WithMany()
-                        .HasForeignKey("PostsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Data.Models.Tag", null)
-                        .WithMany()
-                        .HasForeignKey("TagsTagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Data.Models.Post", b =>
-                {
-                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using BlogAPI.Services;
 using Data.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -73,12 +72,21 @@ namespace BlogAPI.Controllers
             return BadRequest("Problem registering user");
         }
 
+        [Authorize]
+        [HttpPost("refresh")]
+        public async Task<ActionResult<User>> RefreshToken() // Ska ta emot refresh token
+        {
+            var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email)); // Ändra
+            return CreateUserObject(user); // Ändra
+
+        }
 
         [Authorize]
         [HttpGet]
         public async Task<ActionResult<User>> GetCurrentUser()
         {
             var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+
             return CreateUserObject(user);
 
         }
@@ -90,15 +98,7 @@ namespace BlogAPI.Controllers
                 Token = _tokenService.CreateToken(user),
                 UserName = user.UserName
             };
-        }
-
-        private string ipAddress()
-        {
-            if (Request.Headers.ContainsKey("X-Forwarded-For"))
-                return Request.Headers["X-Forwarded-For"];
-            else
-                return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-        }
+            }
 
         }
     }

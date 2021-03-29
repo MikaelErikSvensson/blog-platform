@@ -6,6 +6,7 @@ export type Post = {
   author: string;
   category: string;
   date: string;
+  urlSlug: string;
 };
 
 export type User = {
@@ -36,7 +37,6 @@ export type CreatePostProps = {
 };
 
 export type EditPostProps = {
-  user: User;
   singlePost: Post;
   onEdit: (newPost: Post) => void;
 };

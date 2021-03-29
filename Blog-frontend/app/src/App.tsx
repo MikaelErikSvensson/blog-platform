@@ -21,7 +21,7 @@ import Footer from './components/Footer';
 function App() {
   const [posts, setPosts] = useState<Array<Post>>();
   const [singlePost, setSinglePost] = useState<Post>();
-  const [title, setTitle] = useState<string>();
+  const [titleUrl, setTitleUrl] = useState<string>();
   const [user, setUser] = useState<User>();
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -105,34 +105,33 @@ function App() {
                 <ul>
                   {posts.map((post) => (
                     <li key={post.id}>
-                      <h1 className="mt-5">
+                      <div className="homepage-title mt-5">
                         <Link
-                          to={`/${post.title}`}
+                          to={`/${post.urlSlug}`}
                           onClick={() => {
                             setSinglePost(post);
-                            setTitle(post.title);
+                            setTitleUrl(post.urlSlug);
                           }}
                         >
                           {post.title}
                         </Link>
-                      </h1>
+                      </div>
                       <div className="date-text">
                         by {post.author} on {formatDate(post.date)}
                       </div>
-                      <div>
-                        <ReactMarkdown
-                          source={post.summary}
-                          allowedTypes={['paragraph', 'strong', 'emphasis', 'text', 'heading', 'list', 'listItem']}
-                        />
-                      </div>
                       <Link
-                        to={`/${post.title}`}
+                        to={`/${post.urlSlug}`}
                         onClick={() => {
                           setSinglePost(post);
-                          setTitle(post.title);
+                          setTitleUrl(post.urlSlug);
                         }}
                       >
-                        <div className="read-full-article">Read more...</div>
+                        <div>
+                          <ReactMarkdown
+                            source={post.summary + '...'}
+                            allowedTypes={['paragraph', 'strong', 'emphasis', 'text', 'heading', 'list', 'listItem']}
+                          />
+                        </div>
                       </Link>
                     </li>
                   ))}
@@ -153,7 +152,7 @@ function App() {
                 user={user}
                 onChangeSinglePost={(onChangeSinglePost: any) => {
                   setSinglePost(onChangeSinglePost);
-                  setTitle(onChangeSinglePost.title);
+                  setTitleUrl(onChangeSinglePost.urlSlug);
                 }}
               />
             ) : (
@@ -164,9 +163,9 @@ function App() {
             {loggedIn ? <CreatePost user={user} onCreate={handleCreate} /> : <Redirect to="/" />}
           </Route>
           <Route exact path="/edit_post">
-            {loggedIn ? <EditPost user={user} singlePost={singlePost} onEdit={handleEdit} /> : <Redirect to="/" />}
+            {loggedIn ? <EditPost singlePost={singlePost} onEdit={handleEdit} /> : <Redirect to="/" />}
           </Route>
-          <Route exact path={`/${title}`}>
+          <Route exact path={`/${titleUrl}`}>
             <ViewSinglePost singlePost={singlePost} />
           </Route>
         </Switch>

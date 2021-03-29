@@ -17,7 +17,7 @@ namespace BlogAPI.Services
             this._config = config;
         }
 
-        public string CreateToken(AppUser user)
+public string CreateToken(AppUser user)
         {
             var claims = new List<Claim>
             {
@@ -32,7 +32,7 @@ namespace BlogAPI.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(15),
+                Expires = DateTime.UtcNow.AddHours(20),
                 SigningCredentials = creds
             };
 

@@ -4,7 +4,7 @@ import { createNewPost, editPost } from '../api/backend';
 import { EditPostProps } from '../types/main';
 import Loading from './Loading';
 
-const EditPost = ({ user, singlePost, onEdit }: EditPostProps) => {
+const EditPost = ({ singlePost, onEdit }: EditPostProps) => {
   const [title, setTitle] = useState<string>();
   const [body, setBody] = useState<string>();
 
@@ -23,7 +23,7 @@ const EditPost = ({ user, singlePost, onEdit }: EditPostProps) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     try {
-      editPost(title, body, user.displayName, singlePost.id).then((response) => {
+      editPost(title, body, singlePost.id).then((response) => {
         const newPost = response.data;
         console.log(newPost);
         onEdit(newPost);

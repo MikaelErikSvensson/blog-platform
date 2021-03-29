@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Data.Interfaces;
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
-using Slugify;
-
 
 namespace Data.Repositories
 {
@@ -24,7 +22,6 @@ namespace Data.Repositories
 
         public bool AddNewPost(Post post)
         {
-            SlugHelper helper = new SlugHelper();
             var user = db.Users.FirstOrDefault(x => x.UserName == _userAccessor.GetUsername());
 
             if (user != null) 
@@ -37,8 +34,7 @@ namespace Data.Repositories
                     Body = post.Body,
                     Author = user.DisplayName,
                     Date = DateTime.Now,
-                    Tags = post.Tags,
-                    UrlSlug = helper.GenerateSlug(post.Title)
+                    Tag = post.Tag
                 };
                 db.Posts.Add(postWithAuthor);
                 db.SaveChanges();
@@ -46,6 +42,17 @@ namespace Data.Repositories
             }
             return false;
         }
+
+        // public Post EditPost(int id, Post post)
+        // {
+        //     if (this.Remove(id))
+        //     {
+        //         this.AddNewPost(post);
+        //         db.SaveChanges();
+        //         return db.Posts.FirstOrDefault(x => x.Id == id);
+        //     }
+        //     else return null;
+        // }
 
             public Post EditPost(int id, Post post)
         {

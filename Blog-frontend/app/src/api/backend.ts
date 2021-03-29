@@ -27,18 +27,17 @@ export const getPostsByAuthor = async (author: string) => {
 };
 
 export const createNewPost = (title: string, body: string, author: string) => {
-  //Skicka in user också
   return axios.post('/posts', {
     title: title,
     summary: body,
     body: body,
-    author: author, // från user.DisplayName
+    author: author,
     category: 'programming',
     Date: dateISO,
   });
 };
 
-export const editPost = (title: string, body: string, author: string, id: number) => {
+export const editPost = (title: string, body: string, id: number) => {
   return axios.put(`/posts/${id}`, {
     title: title,
     summary: body,
@@ -64,9 +63,3 @@ export const login = async (user: UserFormValues) => {
 export const register = async (user: UserFormValues) => {
   return await axios.post('/account/register');
 };
-
-// export const Account = {
-//   current: () => requests.get<User>('/account'),
-//   login: (user: UserFormValues) => requests.post<User>('/account/login', user),
-//   register: (user: UserFormValues) => requests.post<User>('account/register', user),
-// };

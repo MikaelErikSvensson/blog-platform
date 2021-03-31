@@ -11,10 +11,7 @@ const ViewSinglePost = ({ singlePost }: ArticleProps) => {
         <div className="date-text">{formatDate(singlePost.date)}</div>
         <div>
           {' '}
-          <ReactMarkdown
-            source={singlePost.body}
-            allowedTypes={['paragraph', 'strong', 'emphasis', 'text', 'heading', 'list', 'listItem']}
-          />
+          <ReactMarkdown source={singlePost.body} />
         </div>
         {/* <p>{singlePost.body}</p> */}
       </div>

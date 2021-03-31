@@ -7,7 +7,7 @@ const HeaderLoggedIn = ({ onLogout }: LogoutProps) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top ">
       <Link to="/" className="navbar-brand">
-        <h2>Mikael Svensson</h2>
+        <h2>Stack Overload</h2>
       </Link>
       <button
         className="navbar-toggler"
@@ -38,16 +38,6 @@ const HeaderLoggedIn = ({ onLogout }: LogoutProps) => {
             </Link>
           </li>
         </ul>
-        <a title="Linkedin" className="header-icon" href="https://www.linkedin.com/in/mikael-svensson-627b3918b/">
-          <FaLinkedin size={25} color="#0072b1" />
-        </a>
-        <a title="Github" className="header-icon" href="https://github.com/MikaelErikSvensson">
-          <FaGithub size={25} color="#333" />
-        </a>
-        <a title="Portfolio" className="header-icon" href="https://www.mikaeleriksvensson.com/">
-          <FaBriefcase size={25} color="#333" />
-        </a>
-
         <button className="btn btn-outline-primary my-2 my-sm-0 ml-5 pl-5 pr-5" type="submit" onClick={() => onLogout()}>
           Log out
         </button>

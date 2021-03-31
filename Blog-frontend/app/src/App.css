@@ -157,9 +157,9 @@ h5 {
   }
 }
 
-#radio input {
-  width: auto;
-  margin-left: 3em;
+.no-gutter > [class*='col-'] {
+  padding-right: 0;
+  padding-left: 0;
 }
 
 .homepage-text {

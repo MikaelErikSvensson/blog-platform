@@ -127,10 +127,7 @@ function App() {
                         }}
                       >
                         <div>
-                          <ReactMarkdown
-                            source={post.summary + '...'}
-                            allowedTypes={['paragraph', 'strong', 'emphasis', 'text', 'heading', 'list', 'listItem']}
-                          />
+                          <ReactMarkdown source={post.summary + '...'} />
                         </div>
                       </Link>
                     </li>

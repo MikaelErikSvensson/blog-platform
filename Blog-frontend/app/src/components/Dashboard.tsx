@@ -44,11 +44,13 @@ const Dashboard = ({ user, onChangeSinglePost }: DashboardProps) => {
         <div className="text-child">
           <nav className="navbar">
             <form className="form-inline">
-              <div className="col-xs-4">
-                <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-                <button className="btn btn-success my-2 my-sm-0" type="submit">
-                  Search
-                </button>
+              <div className="row no-gutter">
+                <div className="col-xs-4">
+                  <input className="form-control mr-sm-2 pl-5 pr-5" type="search" placeholder="Search" aria-label="Search" />
+                  <button className="btn btn-success my-2 my-sm-0 pl-5 pr-5" type="submit">
+                    Search
+                  </button>
+                </div>
               </div>
             </form>
             <button
@@ -107,10 +109,7 @@ const Dashboard = ({ user, onChangeSinglePost }: DashboardProps) => {
                       }}
                     >
                       <div>
-                        <ReactMarkdown
-                          source={post.summary + '...'}
-                          allowedTypes={['paragraph', 'strong', 'emphasis', 'text', 'heading', 'list', 'listItem']}
-                        />
+                        <ReactMarkdown source={post.summary + '...'} />
                       </div>
                     </Link>
                   </div>

@@ -1,7 +1,7 @@
-import { FilterDramaSharp } from '@material-ui/icons';
+import { TagFacesSharp } from '@material-ui/icons';
 import axios from 'axios';
-import { Post, User, UserFormValues } from '../types/main';
-import { dateISO } from '../utils/utils';
+import { Post, Tag, User, UserFormValues } from '../types/main';
+import { dateISO, summary } from '../utils/utils';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
@@ -26,14 +26,14 @@ export const getPostsByAuthor = async (author: string) => {
   return await axios.get(`/posts/author/${author}`);
 };
 
-export const createNewPost = (title: string, body: string, author: string) => {
+export const createNewPost = (title: string, body: string, author: string, tags: Tag[]) => {
   return axios.post('/posts', {
     title: title,
-    summary: body,
+    summary: summary(body),
     body: body,
     author: author,
-    category: 'programming',
-    Date: dateISO,
+    date: dateISO,
+    tags: tags,
   });
 };
 
@@ -62,4 +62,14 @@ export const login = async (user: UserFormValues) => {
 
 export const register = async (user: UserFormValues) => {
   return await axios.post('/account/register');
+};
+
+export const getTagsBySearch = (searchString: string) => {
+  return axios.get(`/tags/search/${searchString}`);
+};
+
+export const createNewTag = async (newTag: string) => {
+  return await axios.post('/tags', {
+    tagName: newTag,
+  });
 };

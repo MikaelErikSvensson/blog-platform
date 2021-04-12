@@ -6,10 +6,17 @@ export const formatDate = (date: string) => {
 };
 const date = new Date();
 
+export const formatTag = (tag: string) => {
+  // Formatera tag till något i stil med #.NET
+  const tagFormatted = '#' + tag;
+  return tagFormatted;
+};
+
 export const dateISO = date.toISOString();
 
 export const summary = (body: string) => {
-  const summary = body.substring(0, 100);
-  console.log(summary);
-  return summary;
+  // Gör om funktion
+  // const summary = body.substring(0, 100);
+  // console.log(summary);
+  // return summary;
 };

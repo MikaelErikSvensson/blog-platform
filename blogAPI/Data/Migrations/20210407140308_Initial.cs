@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Data.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,12 +49,27 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    CommentId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Author = table.Column<string>(type: "text", nullable: true),
+                    Body = table.Column<string>(type: "text", nullable: true),
+                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.CommentId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tags",
                 columns: table => new
                 {
                     TagId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
+                    TagName = table.Column<string>(type: "text", nullable: true),
                     UrlSlug = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -177,7 +192,6 @@ namespace Data.Migrations
                     Title = table.Column<string>(type: "text", nullable: true),
                     Summary = table.Column<string>(type: "text", nullable: true),
                     Body = table.Column<string>(type: "text", nullable: true),
-                    Tag = table.Column<string>(type: "text", nullable: true),
                     Meta = table.Column<string>(type: "text", nullable: true),
                     Author = table.Column<string>(type: "text", nullable: true),
                     UrlSlug = table.Column<string>(type: "text", nullable: true),
@@ -197,25 +211,27 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comments",
+                name: "CommentPost",
                 columns: table => new
                 {
-                    CommentId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Body = table.Column<string>(type: "text", nullable: true),
-                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    PostId = table.Column<int>(type: "integer", nullable: true)
+                    CommentsCommentId = table.Column<int>(type: "integer", nullable: false),
+                    PostsId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => x.CommentId);
+                    table.PrimaryKey("PK_CommentPost", x => new { x.CommentsCommentId, x.PostsId });
                     table.ForeignKey(
-                        name: "FK_Comments_Posts_PostId",
-                        column: x => x.PostId,
+                        name: "FK_CommentPost_Comments_CommentsCommentId",
+                        column: x => x.CommentsCommentId,
+                        principalTable: "Comments",
+                        principalColumn: "CommentId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CommentPost_Posts_PostsId",
+                        column: x => x.PostsId,
                         principalTable: "Posts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -280,9 +296,9 @@ namespace Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_PostId",
-                table: "Comments",
-                column: "PostId");
+                name: "IX_CommentPost_PostsId",
+                table: "CommentPost",
+                column: "PostsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_AppUserId",
@@ -313,13 +329,16 @@ namespace Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Comments");
+                name: "CommentPost");
 
             migrationBuilder.DropTable(
                 name: "PostTag");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "Posts");

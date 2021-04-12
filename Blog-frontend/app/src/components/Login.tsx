@@ -9,7 +9,7 @@ const Login = ({ onLogin }: LoginProps) => {
   let history = useHistory();
 
   return (
-    <div style={{ backgroundImage: 'url(../images/1.jpeg)' }}>
+    <div>
       <div className="form-container">
         <Formik
           initialValues={{

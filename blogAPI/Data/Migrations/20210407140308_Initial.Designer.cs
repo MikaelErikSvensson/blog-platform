@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210329192816_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210407140308_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,21 @@ namespace Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+            modelBuilder.Entity("CommentPost", b =>
+                {
+                    b.Property<int>("CommentsCommentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PostsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("CommentsCommentId", "PostsId");
+
+                    b.HasIndex("PostsId");
+
+                    b.ToTable("CommentPost");
+                });
 
             modelBuilder.Entity("Data.Models.AppUser", b =>
                 {
@@ -95,21 +110,16 @@ namespace Data.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("Author")
+                        .HasColumnType("text");
+
                     b.Property<string>("Body")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("PostId")
-                        .HasColumnType("integer");
-
                     b.HasKey("CommentId");
-
-                    b.HasIndex("PostId");
 
                     b.ToTable("Comments");
                 });
@@ -142,9 +152,6 @@ namespace Data.Migrations
                     b.Property<string>("Summary")
                         .HasColumnType("text");
 
-                    b.Property<string>("Tag")
-                        .HasColumnType("text");
-
                     b.Property<string>("Title")
                         .HasColumnType("text");
 
@@ -165,7 +172,7 @@ namespace Data.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Name")
+                    b.Property<string>("TagName")
                         .HasColumnType("text");
 
                     b.Property<string>("UrlSlug")
@@ -321,13 +328,19 @@ namespace Data.Migrations
                     b.ToTable("PostTag");
                 });
 
-            modelBuilder.Entity("Data.Models.Comment", b =>
+            modelBuilder.Entity("CommentPost", b =>
                 {
-                    b.HasOne("Data.Models.Post", "Post")
-                        .WithMany("Comments")
-                        .HasForeignKey("PostId");
+                    b.HasOne("Data.Models.Comment", null)
+                        .WithMany()
+                        .HasForeignKey("CommentsCommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Post");
+                    b.HasOne("Data.Models.Post", null)
+                        .WithMany()
+                        .HasForeignKey("PostsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Data.Models.Post", b =>
@@ -403,11 +416,6 @@ namespace Data.Migrations
                         .HasForeignKey("TagsTagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Data.Models.Post", b =>
-                {
-                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

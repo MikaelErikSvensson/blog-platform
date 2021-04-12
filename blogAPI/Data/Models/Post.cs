@@ -18,7 +18,7 @@ namespace Data.Models
         public DateTime Date { get; set; }
         public DateTime? Modified {get; set;}
         public AppUser AppUser {get; set;}
-        public IList<Tag> Tags {get; set;}
+        public ICollection<Tag> Tags {get; set;}
         public ICollection<Comment> Comments { get; set; }
 
     }

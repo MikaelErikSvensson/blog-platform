@@ -7,6 +7,21 @@ export type Post = {
   category: string;
   date: string;
   urlSlug: string;
+  tags: Tag[];
+  comments?: Comment[];
+};
+
+export type Tag = {
+  tagId?: number;
+  tagName: string;
+  urlSlug?: string;
+};
+
+export type Comment = {
+  commentId: number;
+  author: string;
+  body: string;
+  date: string;
 };
 
 export type User = {

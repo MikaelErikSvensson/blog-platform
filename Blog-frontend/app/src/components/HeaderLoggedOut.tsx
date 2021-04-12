@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaGithub, FaLinkedin, FaBriefcase } from 'react-icons/fa';
+import { Link, useHistory } from 'react-router-dom';
 
 const HeaderLoggedOut = () => {
+  let history = useHistory();
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top ">
       <Link to="/" className="navbar-brand">
@@ -37,6 +37,12 @@ const HeaderLoggedOut = () => {
             </Link>
           </li>
         </ul>
+        <button className="btn btn-outline-primary pl-5 pr-5" type="submit" onClick={() => history.push('/register')}>
+          Register
+        </button>
+        <button className="btn btn-outline-primary my-2 my-sm-0 ml-2 pl-5 pr-5" type="submit" onClick={() => history.push('/login')}>
+          Log in
+        </button>
       </div>
     </nav>
   );

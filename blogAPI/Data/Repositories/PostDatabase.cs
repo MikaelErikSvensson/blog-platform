@@ -13,23 +13,34 @@ namespace Data.Repositories
 {
     public class PostDatabase : IPostRepository
     {
-        private DataContext db;
-        private readonly IUserAccessor _userAccessor;
 
-        public PostDatabase(DataContext _db, IUserAccessor userAccessor)
+        private readonly IUserAccessor _userAccessor;
+        private readonly DataContext _db;
+
+        public PostDatabase(DataContext db, IUserAccessor userAccessor)
         {
+            this._db = db;
             _userAccessor = userAccessor;
-            db = _db;
+
         }
 
         public bool AddNewPost(Post post)
         {
             SlugHelper helper = new SlugHelper();
-            var user = db.Users.FirstOrDefault(x => x.UserName == _userAccessor.GetUsername());
+            var user = _db.Users.FirstOrDefault(x => x.UserName == _userAccessor.GetUsername());
+            
+            var storedTags = _db.Tags.ToList();
+            var newPostTags = post.Tags;
 
-            if (user != null) 
+            List<Tag> tags = new List<Tag>();
+            foreach (Tag tag in newPostTags)
             {
-                var postWithAuthor = new Post
+                tags.Add(storedTags.FirstOrDefault(x => x.TagName == tag.TagName)); // Loopar över postTags, returnerar första matchen
+            }
+
+            if (user != null)
+            {
+                var newPost = new Post
                 {
                     AppUser = user,
                     Title = post.Title,
@@ -37,37 +48,36 @@ namespace Data.Repositories
                     Body = post.Body,
                     Author = user.DisplayName,
                     Date = DateTime.Now,
-                    Tags = post.Tags,
+                    Tags = tags,
                     UrlSlug = helper.GenerateSlug(post.Title)
                 };
-                db.Posts.Add(postWithAuthor);
-                db.SaveChanges();
+                _db.Posts.Add(newPost);
+                _db.SaveChanges();
                 return true;
             }
             return false;
         }
 
-            public Post EditPost(int id, Post post)
+        public Post EditPost(int id, Post post)
         {
-            // return db.Posts.FirstOrDefault(x => x.Id == id);
-            var upost = db.Posts.FirstOrDefault(x => x.Id == id);
+            // return _db.Posts.FirstOrDefault(x => x.Id == id);
+            var upost = _db.Posts.FirstOrDefault(x => x.Id == id);
             upost.Title = post.Title;
             upost.Summary = post.Summary;
             upost.Body = post.Body;
 
-            db.SaveChanges();
+            _db.SaveChanges();
             return upost;
         }
 
         public List<Post> GetAllPosts()
         {
-            //return db.Posts.OrderByDescending(x => x.Id).ToList();
-             return db.Posts.OrderByDescending(x => x.Id).ToList();
+            return _db.Posts.OrderByDescending(x => x.Date).Include(x => x.Comments).Include(x => x.Tags).ToList();
         }
 
         public Post GetPostById(int id)
         {
-            return db.Posts.FirstOrDefault(x => x.Id == id);
+            return _db.Posts.FirstOrDefault(x => x.Id == id);
         }
 
         public bool Remove(int id)
@@ -77,14 +87,14 @@ namespace Data.Repositories
             {
                 return false;
             }
-            db.Posts.Remove(post);
-            db.SaveChanges();
+            _db.Posts.Remove(post);
+            _db.SaveChanges();
             return true;
         }
 
         public List<Post> GetPostsByAuthor(string author)
         {
-            return db.Posts.Where(x => x.Author.Contains(author)).OrderByDescending(x => x.Id).ToList();
+            return _db.Posts.Where(x => x.Author.Contains(author)).OrderByDescending(x => x.Id).ToList();
         }
     }
 }

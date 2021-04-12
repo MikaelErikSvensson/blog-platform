@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaGithub, FaLinkedin, FaBriefcase } from 'react-icons/fa';
+import { Link, useHistory } from 'react-router-dom';
 import { LogoutProps } from '../types/main';
 
 const HeaderLoggedIn = ({ onLogout }: LogoutProps) => {
+  let history = useHistory();
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top ">
       <Link to="/" className="navbar-brand">
@@ -38,7 +39,10 @@ const HeaderLoggedIn = ({ onLogout }: LogoutProps) => {
             </Link>
           </li>
         </ul>
-        <button className="btn btn-outline-primary my-2 my-sm-0 ml-5 pl-5 pr-5" type="submit" onClick={() => onLogout()}>
+        <button className="btn btn-outline-primary pl-5 pr-5" type="submit" onClick={() => history.push('/dashboard')}>
+          Dashboard
+        </button>
+        <button className="btn btn-outline-primary my-2 my-sm-0 ml-2 pl-5 pr-5" type="submit" onClick={() => onLogout()}>
           Log out
         </button>
       </div>

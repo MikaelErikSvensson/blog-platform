@@ -41,7 +41,6 @@ namespace BlogAPI.Controllers
         [HttpGet("{id}")]
         public ActionResult<Post> GetPostById(int id)
         {
-            // var book = books.FirstOrDefault(book => book.Id == id); // Lambda expression likt JavaScript. Söker fram book.Id för get metodens input id
             var post = _posts.GetPostById(id);
             if (post == null)
             {
@@ -73,7 +72,7 @@ namespace BlogAPI.Controllers
 
                 if (user != null) 
                 {
-                  var postWithAuthor = new Post
+                  var newPost = new Post
                     {
                         Title = post.Title,
                         Summary = post.Summary,
@@ -81,15 +80,15 @@ namespace BlogAPI.Controllers
                         Author = user.DisplayName,
                         Date = DateTime.Now,
                         Tags = post.Tags,
-                        UrlSlug = helper.GenerateSlug(post.Title)
+                        UrlSlug = helper.GenerateSlug(post.Title),
+                        Comments = post.Comments
                     };
-                return postWithAuthor;
+                return newPost;
                 }    
             }
             return BadRequest();
         }
 
-        // PUT api/posts/5
         [Authorize]
         [HttpPut("{id}")]
         public ActionResult<Post> EditPost(int id, Post post)
@@ -102,7 +101,6 @@ namespace BlogAPI.Controllers
             return upost;
         }
 
-        // DELETE api/posts/5
         [Authorize]
         [HttpDelete("{id}")]
         public ActionResult<IEnumerable<Post>> Delete(int id)

@@ -178,6 +178,28 @@ h5 {
   font-weight: 600;
 }
 
+.comment-form {
+  margin-top: 10%;
+}
+
+.comment-section {
+  margin-top: 5%;
+}
+
+.tag {
+  font-weight: bold;
+}
+
+.tag-chosen {
+  background-color: rgb(255, 138, 138);
+}
+
+.item-chosen {
+  display: inline;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
 /* Loader */
 
 #loader {

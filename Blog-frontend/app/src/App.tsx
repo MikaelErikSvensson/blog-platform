@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Link, Switch, Route, useHistory, Redirect } fr
 import About from './components/About';
 import TopPost from './components/TopPost';
 import Login from './components/Login';
-import { formatDate } from './utils/utils';
+import { formatDate, formatTag } from './utils/utils';
 import ViewSinglePost from './components/ViewSinglePost';
 import Loading from './components/Loading';
 import Dashboard from './components/Dashboard';
@@ -29,6 +29,7 @@ function App() {
 
   useEffect(() => {
     getPosts().then((response) => {
+      console.log(response.data);
       setPosts(response.data);
     });
   }, []);
@@ -130,6 +131,11 @@ function App() {
                           <ReactMarkdown source={post.summary + '...'} />
                         </div>
                       </Link>
+                      <div>
+                        {post.tags.map((tag) => (
+                          <span className="tag">{formatTag(tag.tagName)} </span>
+                        ))}
+                      </div>
                     </li>
                   ))}
                 </ul>

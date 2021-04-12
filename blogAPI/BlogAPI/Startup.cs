@@ -39,6 +39,7 @@ namespace BlogAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IPostRepository, PostDatabase>();
+            services.AddTransient<ITagRepository, TagDatabase>();
 
             services.AddControllers(opt => {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();

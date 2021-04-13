@@ -1,6 +1,6 @@
 import { TagFacesSharp } from '@material-ui/icons';
 import axios from 'axios';
-import { Post, Tag, User, UserFormValues } from '../types/main';
+import { Post, Tag, User, UserFormValues, Comment } from '../types/main';
 import { dateISO, summary } from '../utils/utils';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
@@ -18,8 +18,8 @@ axios.interceptors.request.use((config) => {
   }
 });
 
-export const getPosts = async () => {
-  return await axios.get('/posts');
+export const getPosts = async (page: number) => {
+  return await axios.get(`/posts?pageNumber=${page}&pageSize=10`);
 };
 
 export const getPostsByAuthor = async (author: string) => {
@@ -71,5 +71,13 @@ export const getTagsBySearch = (searchString: string) => {
 export const createNewTag = async (newTag: string) => {
   return await axios.post('/tags', {
     tagName: newTag,
+  });
+};
+
+export const createNewComment = async (comment: Comment) => {
+  return await axios.post('/account/login', {
+    author: comment.author,
+    body: comment.body,
+    date: dateISO,
   });
 };

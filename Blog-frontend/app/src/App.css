@@ -90,6 +90,11 @@ h5 {
   width: 60%;
 }
 
+.page-button-container {
+  display: flex;
+  justify-content: center;
+}
+
 @media only screen and (max-width: 600px) {
   .text-child {
     width: 90%;
@@ -106,6 +111,11 @@ h5 {
   .text-child {
     width: 80%;
   }
+}
+
+.page-button {
+  align-items: center;
+  justify-content: center;
 }
 
 .read-full-article {

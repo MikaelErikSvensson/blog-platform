@@ -32,7 +32,7 @@ namespace BlogAPI.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddHours(20),
+                Expires = DateTime.UtcNow.AddHours(5),
                 SigningCredentials = creds
             };
 

@@ -4,7 +4,7 @@ import { formatDate } from '../utils/utils';
 import ReactMarkdown from 'react-markdown';
 import CommentForm from './CommentForm';
 
-const ViewSinglePost = ({ singlePost }: ArticleProps) => {
+const ViewSinglePost = ({ user, singlePost }: ArticleProps) => {
   return (
     <div className="text-container">
       <div className="text-child">
@@ -14,7 +14,7 @@ const ViewSinglePost = ({ singlePost }: ArticleProps) => {
           {' '}
           <ReactMarkdown source={singlePost.body} />
         </div>
-        <CommentForm />
+        <CommentForm user={user} />
         {singlePost.comments ? (
           <ul className="comment-section">
             {singlePost.comments.map((comment) => (

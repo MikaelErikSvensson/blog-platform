@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using BlogAPI.Services;
 using Slugify;
+using Newtonsoft.Json;
 
 namespace BlogAPI.Controllers
 {
@@ -29,12 +30,25 @@ namespace BlogAPI.Controllers
             this._posts = posts;
         }
 
-        // GET api/posts
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult<IEnumerable<Post>> GetAllPosts()
+        public ActionResult<IEnumerable<Post>> GetPosts([FromQuery] PostParameters postParameters)
         {
-            return _posts.GetAllPosts();
+            var posts = _posts.GetPosts(postParameters);
+
+            var metadata = new
+            {
+                posts.TotalCount,
+                posts.PageSize,
+                posts.CurrentPage,
+                posts.hasNext,
+                posts.hasPrevious
+            };
+
+            Response.Headers.Add("Pagination", JsonConvert.SerializeObject(metadata));
+
+
+            return Ok(posts);
         }
 
         [AllowAnonymous]
@@ -63,10 +77,10 @@ namespace BlogAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<Post>> NewPost(Post post)
+        public async Task<ActionResult<Post>> CreatePost(Post post)
         {
             SlugHelper helper = new SlugHelper();
-            if (_posts.AddNewPost(post))
+            if (_posts.CreatePost(post))
             {
                 var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
 
@@ -91,9 +105,20 @@ namespace BlogAPI.Controllers
 
         [Authorize]
         [HttpPut("{id}")]
-        public ActionResult<Post> EditPost(int id, Post post)
+        public ActionResult<Post> UpdatePost(int id, Post post)
         {
-            var upost = _posts.EditPost(id, post);
+            var upost = _posts.UpdatePost(id, post);
+            if (upost == null)
+            {
+                return NotFound();
+            }
+            return upost;
+        }
+        [Authorize]
+        [HttpPut("comment/{id}")]
+        public ActionResult<Post> AddComment(int id, Post post)
+        {
+            var upost = _posts.AddComment(id, post);
             if (upost == null)
             {
                 return NotFound();
@@ -103,11 +128,11 @@ namespace BlogAPI.Controllers
 
         [Authorize]
         [HttpDelete("{id}")]
-        public ActionResult<IEnumerable<Post>> Delete(int id)
+        public ActionResult<IEnumerable<Post>> DeletePost(int id)
         {
-            if (_posts.Remove(id))
+            if (_posts.DeletePost(id))
             {
-                return _posts.GetAllPosts();
+                return Ok();
             }
             return NotFound();
         }

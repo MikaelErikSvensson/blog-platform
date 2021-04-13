@@ -35,7 +35,6 @@ namespace BlogAPI
             _config = config;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IPostRepository, PostDatabase>();
@@ -50,14 +49,12 @@ namespace BlogAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BlogAPI", Version = "v1" });
             });
 
-            //Lägg till db connection
             services.AddDbContext<DataContext>(opt => 
             {
                 opt.UseNpgsql(_config.GetConnectionString("DefaultConnection"));
             });
 
             
-            // Auth
             services.AddIdentityCore<AppUser>(opt => {
             opt.Password.RequireNonAlphanumeric = false;
             })
@@ -81,7 +78,6 @@ namespace BlogAPI
             services.AddScoped<IUserAccessor, UserAccessor>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -93,10 +89,10 @@ namespace BlogAPI
 
             // app.UseHttpsRedirection();
 
-            // CORS config must be placed exactly here.
-            app.UseCors(options => options.WithOrigins("http://localhost:3000") // �ndra URL
+            app.UseCors(options => options.WithOrigins("http://localhost:3000")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
+                .WithExposedHeaders("Pagination")
                 .AllowCredentials());
 
             app.UseRouting();

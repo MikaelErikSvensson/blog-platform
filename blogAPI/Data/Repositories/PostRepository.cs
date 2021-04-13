@@ -1,4 +1,5 @@
-﻿using Data.Interfaces;
+﻿using Data.Helpers;
+using Data.Interfaces;
 using Data.Models;
 using System;
 using System.Collections.Generic;
@@ -68,8 +69,42 @@ namespace Data.Repositories
         {
             throw new NotImplementedException();
         }
+        public Post AddComment(int id, Post post)
+        {
+            throw new NotImplementedException();
+        }
 
-        Post IPostRepository.EditPost(int id, Post post)
+        public List<Post> GetSomePosts()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CreatePost(Post post)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeletePost(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Post UpdatePost(int id, Post post)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Post> GetPosts()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Post> GetPosts(PostParameters postParameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        PagedList<Post> IPostRepository.GetPosts(PostParameters postParameters)
         {
             throw new NotImplementedException();
         }

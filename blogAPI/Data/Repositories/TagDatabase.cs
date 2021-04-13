@@ -20,7 +20,6 @@ namespace Data.Repositories
             return true;
         }
 
-
         public List<Tag> GetAllTags()
         {
             return _db.Tags.ToList();

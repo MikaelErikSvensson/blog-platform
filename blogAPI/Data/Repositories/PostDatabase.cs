@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Data.Helpers;
 using Data.Interfaces;
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -23,11 +24,37 @@ namespace Data.Repositories
             _userAccessor = userAccessor;
 
         }
+        // public List<Post> GetPosts()
+        // {
+        //     return _db.Posts.OrderByDescending(x => x.Date).Include(x => x.Comments).Include(x => x.Tags).ToList();
+        // }
+        public PagedList<Post> GetPosts(PostParameters postParameters)
+        {
+            // return _db.Posts.OrderByDescending(x => x.Date).Include(x => x.Comments).Include(x => x.Tags).ToList();
 
-        public bool AddNewPost(Post post)
+            // return _db.Posts.OrderByDescending(x => x.Date)
+            // .Include(x => x.Comments)
+            // .Include(x => x.Tags)
+            // .Skip((postParameters.PageNumber - 1) * postParameters.pageSize)
+            // .Take(postParameters.pageSize)
+            // .ToList();
+            return PagedList<Post>.ToPagedList(_db.Posts.OrderByDescending(x => x.Date).Include(x => x.Comments).Include(x => x.Tags),
+            postParameters.PageNumber, postParameters.PageSize);
+        }
+
+        public Post GetPostById(int id)
+        {
+            return _db.Posts.FirstOrDefault(x => x.Id == id);
+        }
+        public List<Post> GetPostsByAuthor(string author)
+        {
+            return _db.Posts.Where(x => x.Author.Contains(author)).OrderByDescending(x => x.Date).Include(x => x.Comments).Include(x => x.Tags).ToList();
+        }
+
+        public bool CreatePost(Post post)
         {
             SlugHelper helper = new SlugHelper();
-            var user = _db.Users.FirstOrDefault(x => x.UserName == _userAccessor.GetUsername());
+            var user = _db.Users.FirstOrDefault(x => x.UserName == _userAccessor.GetUsername()); // Se till att username är unikt
             
             var storedTags = _db.Tags.ToList();
             var newPostTags = post.Tags;
@@ -35,7 +62,7 @@ namespace Data.Repositories
             List<Tag> tags = new List<Tag>();
             foreach (Tag tag in newPostTags)
             {
-                tags.Add(storedTags.FirstOrDefault(x => x.TagName == tag.TagName)); // Loopar över postTags, returnerar första matchen
+                tags.Add(storedTags.FirstOrDefault(x => x.TagName == tag.TagName));
             }
 
             if (user != null)
@@ -58,9 +85,8 @@ namespace Data.Repositories
             return false;
         }
 
-        public Post EditPost(int id, Post post)
+        public Post UpdatePost(int id, Post post)
         {
-            // return _db.Posts.FirstOrDefault(x => x.Id == id);
             var upost = _db.Posts.FirstOrDefault(x => x.Id == id);
             upost.Title = post.Title;
             upost.Summary = post.Summary;
@@ -70,17 +96,15 @@ namespace Data.Repositories
             return upost;
         }
 
-        public List<Post> GetAllPosts()
+       public Post AddComment(int id, Post post)
         {
-            return _db.Posts.OrderByDescending(x => x.Date).Include(x => x.Comments).Include(x => x.Tags).ToList();
+            var upost = _db.Posts.FirstOrDefault(x => x.Id == id);
+
+            _db.SaveChanges();
+            return upost;
         }
 
-        public Post GetPostById(int id)
-        {
-            return _db.Posts.FirstOrDefault(x => x.Id == id);
-        }
-
-        public bool Remove(int id)
+        public bool DeletePost(int id)
         {
             var post = GetPostById(id);
             if (post == null)
@@ -90,11 +114,6 @@ namespace Data.Repositories
             _db.Posts.Remove(post);
             _db.SaveChanges();
             return true;
-        }
-
-        public List<Post> GetPostsByAuthor(string author)
-        {
-            return _db.Posts.Where(x => x.Author.Contains(author)).OrderByDescending(x => x.Id).ToList();
         }
     }
 }

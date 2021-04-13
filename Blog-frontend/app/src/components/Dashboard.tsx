@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DashboardProps, Post, User } from '../types/main';
-import { formatDate } from '../utils/utils';
+import { formatDate, formatTag } from '../utils/utils';
 import { Link, useHistory } from 'react-router-dom';
 import { deletePost, getPostsByAuthor } from '../api/backend';
 import { FaTrash, FaEdit } from 'react-icons/fa';
@@ -8,7 +8,7 @@ import ReactMarkdown from 'react-markdown';
 import Loading from './Loading';
 
 const Dashboard = ({ user, onChangeSinglePost }: DashboardProps) => {
-  const [posts, setPosts] = useState<Array<Post>>();
+  const [posts, setPosts] = useState<Post[]>([]);
 
   let history = useHistory();
 
@@ -16,6 +16,7 @@ const Dashboard = ({ user, onChangeSinglePost }: DashboardProps) => {
     console.log(user);
     getPostsByAuthor(user.displayName).then((response) => {
       setPosts(response.data);
+      console.log(response.data);
     });
   }, []);
 
@@ -112,6 +113,15 @@ const Dashboard = ({ user, onChangeSinglePost }: DashboardProps) => {
                         <ReactMarkdown source={post.summary + '...'} />
                       </div>
                     </Link>
+                    {post.tags ? (
+                      <div>
+                        {post.tags.map((tag) => (
+                          <span className="tag">{formatTag(tag.tagName)} </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
                   </div>
                 </div>
               </li>

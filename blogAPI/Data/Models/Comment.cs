@@ -12,6 +12,5 @@ namespace Data.Models
         public DateTime Date { get; set; }
         [JsonIgnore]
         public ICollection<Post> Posts {get; set;}
-
     }
 }

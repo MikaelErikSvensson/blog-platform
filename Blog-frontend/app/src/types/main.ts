@@ -38,7 +38,12 @@ export type UserFormValues = {
 };
 
 export type ArticleProps = {
+  user: User;
   singlePost?: Post;
+};
+
+export type CommentFormProps = {
+  user: User;
 };
 
 export type DashboardProps = {

@@ -24,15 +24,18 @@ function App() {
   const [titleUrl, setTitleUrl] = useState<string>();
   const [user, setUser] = useState<User>();
   const [loggedIn, setLoggedIn] = useState(false);
-
-  let history = useHistory();
+  const [page, setPage] = useState(1);
+  const [hasPrevious, setHasPrevious] = useState(false);
+  const [hasNext, setHasNext] = useState(false);
 
   useEffect(() => {
-    getPosts().then((response) => {
-      console.log(response.data);
+    getPosts(page).then((response) => {
+      const pagination = JSON.parse(response.headers.pagination);
+      setHasPrevious(pagination.hasPrevious);
+      setHasNext(pagination.hasNext);
       setPosts(response.data);
     });
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem('jwt');
@@ -139,6 +142,52 @@ function App() {
                     </li>
                   ))}
                 </ul>
+                <div className="page-button-container">
+                  <div className="page-button-child">
+                    {hasPrevious ? (
+                      <button
+                        onClick={() => {
+                          setTimeout(() => {
+                            window.scrollTo({
+                              top: 0,
+                              left: 0,
+                              behavior: 'smooth',
+                            });
+                          }, 50);
+                          setPage(page - 1);
+                        }}
+                        className="page-button btn btn-primary my-2 my-sm-0 pl-5 pr-5"
+                      >
+                        Newer
+                      </button>
+                    ) : (
+                      <button disabled className="page-button btn btn-primary my-2 my-sm-0 pl-5 pr-5">
+                        Newer
+                      </button>
+                    )}
+                    {hasNext ? (
+                      <button
+                        onClick={() => {
+                          setTimeout(() => {
+                            window.scrollTo({
+                              top: 0,
+                              left: 0,
+                              behavior: 'smooth',
+                            });
+                          }, 50);
+                          setPage(page + 1);
+                        }}
+                        className="page-button btn btn-primary my-2 my-sm-0 ml-2 pl-5 pr-5 "
+                      >
+                        Older
+                      </button>
+                    ) : (
+                      <button disabled className="page-button btn btn-primary my-2 my-sm-0 ml-2 pl-5 pr-5 ">
+                        Older
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </Route>
@@ -169,7 +218,7 @@ function App() {
             {loggedIn ? <EditPost singlePost={singlePost} onEdit={handleEdit} /> : <Redirect to="/" />}
           </Route>
           <Route exact path={`/${titleUrl}`}>
-            <ViewSinglePost singlePost={singlePost} />
+            <ViewSinglePost user={user} singlePost={singlePost} />
           </Route>
         </Switch>
         <Footer />
